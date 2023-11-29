@@ -1,3 +1,4 @@
+import time
 from random import seed
 from random import randint
 # seed random number generator
@@ -5,12 +6,13 @@ from random import randint
 # generate some random numbers
 
 
-def listCreation(tamanho) :
+def listCreation(tamanho):
     values = []
     for i in range(tamanho):
         values.append(i)
 
     return values
+
 
 def swapPositions(list, size):
     seed()
@@ -20,31 +22,34 @@ def swapPositions(list, size):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
 
-def achaPivo(array, begin, end):
-  pos = begin + 1
-  pivo = 0
 
-  while pos <= end:
-    if array[pos] >= array[pos - 1]:
-      pos=pos+1
-    else:
-      pivo = pos
-      break
-  return pivo
+def achaPivo(array, begin, end):
+    pos = begin + 1
+    pivo = 0
+
+    while pos <= end:
+        if array[pos] >= array[pos - 1]:
+            pos = pos+1
+        else:
+            pivo = pos
+            break
+    return pivo
+
 
 def pivot_aula(array, begin, end):
     begin = begin + 1
     r = end
-    while(True):
-        if  begin > end:
+    while (True):
+        if begin > end:
             break
-        if array[begin] >= array[begin -1]:
-            begin = begin +1
+        if array[begin] >= array[begin - 1]:
+            begin = begin + 1
         else:
             r = begin
             break
-    
+
     return r
+
 
 def mediana(array, begin, end):
     mid = (begin+end-1)//2
@@ -63,20 +68,21 @@ def mediana(array, begin, end):
 
     return begin
 
+
 def pivotChoosing(array, begin, end, method):
     try:
         if (method == 0):
             p = array[begin]
-        if (method == 1):
+        elif (method == 1):
             p = array[mediana(array, begin, end)]
         elif (method == 2):
-            p = array[randint(begin, end)]
+            p = (array[begin] + array[end] + array[(begin + end)//2]) // 3
         elif (method == 3):
-            p = array[(begin + end)//2]
+            p = array[randint(begin, end)]
         elif (method == 4):
-            p = array[pivot_aula(array, begin, end)]
+            p = array[(begin + end)//2]
         elif (method == 5):
-            p = (array[begin] + array[end] + array[(begin + end)//2]) //3
+            p = array[pivot_aula(array, begin, end)]
         else:
             raise StopIteration
     except StopIteration:
@@ -100,6 +106,7 @@ def partition(array, begin, end, method):
 
     return (i+1)
 
+
 def quicksort(array, begin=0, end=None, method=3):
     if (end is None):
         end = len(array)-1
@@ -111,43 +118,63 @@ def quicksort(array, begin=0, end=None, method=3):
         return
 
 
-for x in range(2,3):
+for x in range(2, 3):
     lista = listCreation((10) ** (x))
     pouco = []
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
 
-
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 0)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
+
 
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 1)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
+
 
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 2)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
+
 
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 3)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
+
 
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 4)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
+
 
     for y in range(int((10 ** x) * 0.45)):
         pouco = swapPositions(lista, (10) ** (x))
+    tic = time.perf_counter()
     quicksort(pouco, 0, len(pouco)-1, 5)
     print(pouco)
+    toc = time.perf_counter()
+    print(f"Método rodou em {toc - tic:0.8f} segundos")
     # for y in range(int((10 ** x) * 0.25)):
     #     medio = (swapPositions(lista, (10) ** (x)))
     # for y in range(int((10 ** x) * 0.45)):
     #     muito = (swapPositions(lista, (10) ** (x)))
-
-
