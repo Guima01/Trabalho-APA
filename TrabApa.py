@@ -1,18 +1,15 @@
 import time
-from random import seed
-from random import randint
+from random import seed, randint
 # seed random number generator
 
 # generate some random numbers
 
-
-def listCreation(tamanho):
+def listCreation(size):
     values = []
-    for i in range(tamanho):
+    for i in range(size):
         values.append(i)
 
     return values
-
 
 def swapPositions(list, size):
     seed()
@@ -21,7 +18,6 @@ def swapPositions(list, size):
 
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
-
 
 def achaPivo(array, begin, end):
     pos = begin + 1
@@ -34,7 +30,6 @@ def achaPivo(array, begin, end):
             pivo = pos
             break
     return pivo
-
 
 def pivot_aula(array, begin, end):
     begin = begin + 1
@@ -49,7 +44,6 @@ def pivot_aula(array, begin, end):
             break
 
     return r
-
 
 def mediana(array, begin, end):
     mid = (begin+end-1)//2
@@ -67,7 +61,6 @@ def mediana(array, begin, end):
         return end-1
 
     return begin
-
 
 def pivotChoosing(array, begin, end, method):
     try:
@@ -92,7 +85,6 @@ def pivotChoosing(array, begin, end, method):
 
     return array[end]
 
-
 def partition(array, begin, end, method):
     pivot = pivotChoosing(array, begin, end, method)
     i = (begin - 1)
@@ -106,7 +98,6 @@ def partition(array, begin, end, method):
 
     return (i+1)
 
-
 def quicksort(array, begin=0, end=None, method=3):
     if (end is None):
         end = len(array)-1
@@ -117,64 +108,44 @@ def quicksort(array, begin=0, end=None, method=3):
     else:
         return
 
+def runQuicksort(method):
+    array = []
+    totalTime = 0
+    
+    for iteration in range (1, 11):
+        for y in range(int((10 ** x) * 0.45)):
+            array = swapPositions(lista, (10) ** (x))
 
-for x in range(2, 3):
+        tic = time.perf_counter_ns()
+        quicksort(array, 0, len(array)-1, method)
+        toc = time.perf_counter_ns()
+        
+        totalTime += toc - tic
+    return (totalTime / 10) / 1e9
+        #print(array)
+        #print(f"Método rodou em {toc - tic:0.8f} segundos")
+    
+    
+for x in range(2, 7):
     lista = listCreation((10) ** (x))
-    pouco = []
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 0)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-
-
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 1)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-
-
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 2)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-
-
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 3)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-
-
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 4)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-
-
-    for y in range(int((10 ** x) * 0.45)):
-        pouco = swapPositions(lista, (10) ** (x))
-    tic = time.perf_counter()
-    quicksort(pouco, 0, len(pouco)-1, 5)
-    print(pouco)
-    toc = time.perf_counter()
-    print(f"Método rodou em {toc - tic:0.8f} segundos")
-    # for y in range(int((10 ** x) * 0.25)):
-    #     medio = (swapPositions(lista, (10) ** (x)))
-    # for y in range(int((10 ** x) * 0.45)):
-    #     muito = (swapPositions(lista, (10) ** (x)))
+    
+    print(f"Lista de tamanho 10^{x}")
+    
+    print("Executando Quicksort com pivô fixo na primeira posição da lista...")
+    print(f"Tempo de médio de execução: {runQuicksort(0):0.8f} segundos\n")
+    
+    print("Executando Quicksort com pivô fixo na posição central da lista...")
+    print(f"Tempo de médio de execução: {runQuicksort(1):0.8f} segundos\n")
+    
+    print("Executando Quicksort com pivô média do primeiro, central e ultimo valor da lista...")
+    print(f"Tempo de médio de execução: {runQuicksort(2):0.8f} segundos\n")
+    
+    print("Executando Quicksort com pivô randômico...")
+    print(f"Tempo de médio de execução: {runQuicksort(3):0.8f} segundos\n")
+    
+    print("Executando Quicksort com pivô mediana...")
+    print(f"Tempo de médio de execução: {runQuicksort(4):0.8f} segundos\n")
+    
+    print("Executando Quicksort com procedimento Acha Pivô...")
+    print(f"Tempo de médio de execução: {runQuicksort(5):0.8f} segundos\n\n\n")
+    
