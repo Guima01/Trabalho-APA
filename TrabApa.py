@@ -1,6 +1,7 @@
 import time
 from random import seed, randint
 import matplotlib.pyplot as plt
+import copy
 # seed random number generator
 
 # generate some random numbers
@@ -10,7 +11,12 @@ def listCreation(size):
     for i in range(size):
         values.append(i)
 
-    return values
+    array = []
+    for iteration in range (1, 11):
+       for y in range(int((10 ** x) * 0.45)):
+           array = swapPositions(values, (10) ** (x))
+
+    return array
 
 def swapPositions(list, size):
     seed()
@@ -110,20 +116,17 @@ def quicksort(array, begin=0, end=None, method=3):
         return
     
 
-def runQuicksort(method):
-   array = []
-   totalTime = 0
-   
-   for iteration in range (1, 11):
-       for y in range(int((10 ** x) * 0.45)):
-           array = swapPositions(lista, (10) ** (x))
+def runQuicksort(method, array):
 
-       tic = time.perf_counter_ns()
-       quicksort(array, 0, len(array)-1, method)
-       toc = time.perf_counter_ns()
-       
-       totalTime += toc - tic
-   return (totalTime / 10) / 1e9
+    totalTime = 0
+
+    tic = time.perf_counter_ns()
+    quicksort(array, 0, len(array)-1, method)
+    toc = time.perf_counter_ns()
+    
+    totalTime += toc - tic
+
+    return (totalTime / 10) / 1e9
    
 results = [[], [], [], [], [], []]
 
@@ -131,28 +134,30 @@ for x in range(2, 8):
    lista = listCreation((10) ** (x))
    
    print(f"Lista de tamanho 10^{x}")
+
    
-   results[0].append(runQuicksort(0))
+   results[0].append(runQuicksort(0, copy.copy(lista)))
    print("Executando Quicksort com pivô fixo na primeira posição da lista...")
    print(f"Tempo de médio de execução: {results[0][-1]:0.8f} segundos\n")
    
-   results[1].append(runQuicksort(1))
+   results[1].append(runQuicksort(1, copy.copy(lista)))
    print("Executando Quicksort com pivô fixo na posição central da lista...")
    print(f"Tempo de médio de execução: {results[1][-1]:0.8f} segundos\n")
+
    
-   results[2].append(runQuicksort(2))
+   results[2].append(runQuicksort(2, copy.copy(lista)))
    print("Executando Quicksort com pivô média do primeiro, central e ultimo valor da lista...")
    print(f"Tempo de médio de execução: {results[2][-1]:0.8f} segundos\n")
    
-   results[3].append(runQuicksort(3))
+   results[3].append(runQuicksort(3, copy.copy(lista)))
    print("Executando Quicksort com pivô randômico...")
    print(f"Tempo de médio de execução: {results[3][-1]:0.8f} segundos\n")
    
-   results[4].append(runQuicksort(4))
+   results[4].append(runQuicksort(4, copy.copy(lista)))
    print("Executando Quicksort com pivô mediana...")
    print(f"Tempo de médio de execução: {results[4][-1]:0.8f} segundos\n")
    
-   results[5].append(runQuicksort(5))
+   results[5].append(runQuicksort(5, copy.copy(lista)))
    print("Executando Quicksort com procedimento Acha Pivô...")
    print(f"Tempo de médio de execução: {results[5][-1]:0.8f} segundos\n\n\n")
    
