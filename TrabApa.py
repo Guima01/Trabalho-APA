@@ -1,5 +1,6 @@
 import time
 from random import seed, randint
+import matplotlib.pyplot as plt
 # seed random number generator
 
 # generate some random numbers
@@ -107,45 +108,69 @@ def quicksort(array, begin=0, end=None, method=3):
         quicksort(array, p+1, end, method)
     else:
         return
+    
 
 def runQuicksort(method):
-    array = []
-    totalTime = 0
-    
-    for iteration in range (1, 11):
-        for y in range(int((10 ** x) * 0.45)):
-            array = swapPositions(lista, (10) ** (x))
+   array = []
+   totalTime = 0
+   
+   for iteration in range (1, 11):
+       for y in range(int((10 ** x) * 0.45)):
+           array = swapPositions(lista, (10) ** (x))
 
-        tic = time.perf_counter_ns()
-        quicksort(array, 0, len(array)-1, method)
-        toc = time.perf_counter_ns()
-        
-        totalTime += toc - tic
-    return (totalTime / 10) / 1e9
-        #print(array)
-        #print(f"Método rodou em {toc - tic:0.8f} segundos")
+       tic = time.perf_counter_ns()
+       quicksort(array, 0, len(array)-1, method)
+       toc = time.perf_counter_ns()
+       
+       totalTime += toc - tic
+   return (totalTime / 10) / 1e9
+   
+results = [[], [], [], [], [], []]
+
+for x in range(2, 8):
+   lista = listCreation((10) ** (x))
+   
+   print(f"Lista de tamanho 10^{x}")
+   
+   results[0].append(runQuicksort(0))
+   print("Executando Quicksort com pivô fixo na primeira posição da lista...")
+   print(f"Tempo de médio de execução: {results[0][-1]:0.8f} segundos\n")
+   
+   results[1].append(runQuicksort(1))
+   print("Executando Quicksort com pivô fixo na posição central da lista...")
+   print(f"Tempo de médio de execução: {results[1][-1]:0.8f} segundos\n")
+   
+   results[2].append(runQuicksort(2))
+   print("Executando Quicksort com pivô média do primeiro, central e ultimo valor da lista...")
+   print(f"Tempo de médio de execução: {results[2][-1]:0.8f} segundos\n")
+   
+   results[3].append(runQuicksort(3))
+   print("Executando Quicksort com pivô randômico...")
+   print(f"Tempo de médio de execução: {results[3][-1]:0.8f} segundos\n")
+   
+   results[4].append(runQuicksort(4))
+   print("Executando Quicksort com pivô mediana...")
+   print(f"Tempo de médio de execução: {results[4][-1]:0.8f} segundos\n")
+   
+   results[5].append(runQuicksort(5))
+   print("Executando Quicksort com procedimento Acha Pivô...")
+   print(f"Tempo de médio de execução: {results[5][-1]:0.8f} segundos\n\n\n")
+   
+   
+print(results)
+
+
+sizes = [10**i for i in range(2, 8)]
+# Iterando pelos arrays internos para criar os gráficos
+for i, array in enumerate(results, start=1):
+    formatted_array = [float(val) for val in array]  # Convertendo para float
     
-    
-for x in range(2, 7):
-    lista = listCreation((10) ** (x))
-    
-    print(f"Lista de tamanho 10^{x}")
-    
-    print("Executando Quicksort com pivô fixo na primeira posição da lista...")
-    print(f"Tempo de médio de execução: {runQuicksort(0):0.8f} segundos\n")
-    
-    print("Executando Quicksort com pivô fixo na posição central da lista...")
-    print(f"Tempo de médio de execução: {runQuicksort(1):0.8f} segundos\n")
-    
-    print("Executando Quicksort com pivô média do primeiro, central e ultimo valor da lista...")
-    print(f"Tempo de médio de execução: {runQuicksort(2):0.8f} segundos\n")
-    
-    print("Executando Quicksort com pivô randômico...")
-    print(f"Tempo de médio de execução: {runQuicksort(3):0.8f} segundos\n")
-    
-    print("Executando Quicksort com pivô mediana...")
-    print(f"Tempo de médio de execução: {runQuicksort(4):0.8f} segundos\n")
-    
-    print("Executando Quicksort com procedimento Acha Pivô...")
-    print(f"Tempo de médio de execução: {runQuicksort(5):0.8f} segundos\n\n\n")
-    
+    plt.figure(figsize=(8, 6))
+    plt.plot(sizes, formatted_array, marker='o', linestyle='-', label=f'Array {i}')
+    plt.title(f'Array {i} - Relação entre tamanho dos arrays e tempo de execução')
+    plt.xlabel('Tamanho (log10)')
+    plt.ylabel('Tempo de execução')
+    plt.xscale('log')  # Usar escala logarítmica para o eixo x
+    plt.legend()
+    plt.grid(True)
+    plt.savefig("QuicksortMethod" + str(i))
