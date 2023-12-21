@@ -2,9 +2,32 @@ import time
 from random import seed, randint
 import matplotlib.pyplot as plt
 import copy
+import statistics
 # seed random number generator
 
 # generate some random numbers
+
+def quickSelect(L, k):
+   smallerList = []
+   largerList=[]
+   if len(L) != 0:
+      pivot = L[(len(L)//2)]
+
+   for i in L:
+        if i<pivot:
+           smallerList.append(i)
+
+   for i in L:
+        if i>pivot:
+           largerList.append(i)
+   m=len(smallerList)
+   count=len(L)-len(smallerList)-len(largerList)
+   if k >= m and k < m + count:
+       return pivot
+   elif m > k:
+        return quickSelect(smallerList, k)
+   else:
+       return quickSelect(largerList, k - m - count)
 
 def listCreation(size):
     values = []
@@ -83,6 +106,8 @@ def pivotChoosing(array, begin, end, method):
             p = array[(begin + end)//2]
         elif (method == 5):
             p = array[pivot_aula(array, begin, end)]
+        elif (method == 6):
+            p = quickSelect(array, len(array)//2)
         else:
             raise StopIteration
     except StopIteration:
@@ -128,10 +153,14 @@ def runQuicksort(method, array):
 
     return (totalTime / 10) / 1e9
    
-results = [[], [], [], [], [], []]
+results = [[], [], [], [], [], [],[]]
+
+
 
 for x in range(2, 8):
    lista = listCreation((10) ** (x))
+
+   print(quickSelect(lista, len(lista)//2))
    
    print(f"Lista de tamanho 10^{x}")
 
@@ -141,7 +170,7 @@ for x in range(2, 8):
    print(f"Tempo de médio de execução: {results[0][-1]:0.8f} segundos\n")
    
    results[1].append(runQuicksort(1, copy.copy(lista)))
-   print("Executando Quicksort com pivô fixo na posição central da lista...")
+   print("Executando Quicksort com pivô mediana...")
    print(f"Tempo de médio de execução: {results[1][-1]:0.8f} segundos\n")
 
    
@@ -154,19 +183,19 @@ for x in range(2, 8):
    print(f"Tempo de médio de execução: {results[3][-1]:0.8f} segundos\n")
    
    results[4].append(runQuicksort(4, copy.copy(lista)))
-   print("Executando Quicksort com pivô mediana...")
+   print("Executando Quicksort com pivô fixo na posição central da lista...")
    print(f"Tempo de médio de execução: {results[4][-1]:0.8f} segundos\n")
    
    results[5].append(runQuicksort(5, copy.copy(lista)))
    print("Executando Quicksort com procedimento Acha Pivô...")
    print(f"Tempo de médio de execução: {results[5][-1]:0.8f} segundos\n\n\n")
-   
-   
-print(results)
 
+   results[6].append(runQuicksort(6, copy.copy(lista)))
+   print("Executando Quicksort com pivô mediana dos elementos...")
+   print(f"Tempo de médio de execução: {results[6][-1]:0.8f} segundos\n\n\n")
 
 sizes = [10**i for i in range(2, 8)]
-pivots = ["Pivô na primeira", "Pivô central ", "Pivô média", "Pivô randômico", "Pivô mediana", "Procedimento acha pivô"]
+pivots = ["Pivô na primeira", "Pivô mediana do array", "Pivô média", "Pivô randômico", "Pivô central ", "Procedimento acha pivô", "Pivo mediana dos elementos"]
 # Iterando pelos arrays internos para criar os gráficos
 for i, array in enumerate(results, start=1):
     formatted_array = [float(val) for val in array]  # Convertendo para float
