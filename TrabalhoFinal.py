@@ -6,6 +6,29 @@ import copy
 
 # generate some random numbers
 
+def quickSelect(L, k):
+   smallerList = []
+   largerList=[]
+   if len(L) != 0:
+      pivot = L[(len(L)//2)]
+
+   for i in L:
+        if i<pivot:
+           smallerList.append(i)
+
+   for i in L:
+        if i>pivot:
+           largerList.append(i)
+   m=len(smallerList)
+   count=len(L)-len(smallerList)-len(largerList)
+   if k >= m and k < m + count:
+       return pivot
+   elif m > k:
+        return quickSelect(smallerList, k)
+   else:
+       return quickSelect(largerList, k - m - count)
+
+
 def listCreation(size, percentage):
     values = list(range(size))
     array = copy.deepcopy(values)
@@ -80,6 +103,8 @@ def pivotChoosing(array, begin, end, method):
             p = array[(begin + end)//2]
         elif (method == 5):
             p = array[pivot_aula(array, begin, end)]
+        elif (method == 6):
+            p = int(quickSelect(array, len(array)//2))
         else:
             raise StopIteration
     except StopIteration:
@@ -126,23 +151,27 @@ def runQuicksort(method, array):
 
     return totalTime / trials / 1e9
    
-results = [[], [], [], [], [], []]
+
 
 porcentagens = [0.05, 0.25, 0.45]
 
 def getMethodName(method):
     methodNames = {
         0: "Pivô primeira posição",
-        1: "Pivô mediana",
+        1: "Pivô mediana da lista",
         2: "Pivô média",
         3: "Pivô randômico",
         4: "Pivô posição central",
         5: "Pivô acha Pivô",
+        6: "Pivô mediana dos elementos",
     }
     return methodNames.get(method, "Método não definido")
 
 for porcent in porcentagens:
-    for x in range(2, 7):
+
+    results = [[], [], [], [], [], []]
+
+    for x in range(2,8):
         lista = listCreation(10**x, porcent)
         
         print(f"------------------------------------------------------------------------")
@@ -158,13 +187,13 @@ for porcent in porcentagens:
         print("\n\n")
 
     # Gráficos para cada cenário de desordem
-    sizes = [10**i for i in range(2, 7)]
+    sizes = [10**i for i in range(2,8)]
     for i, array in enumerate(results, start=1):
         formatted_array = [float(val) for val in array]
         plt.figure(figsize=(8, 6))
         plt.plot(sizes, formatted_array[:len(sizes)], marker='o', linestyle='-', label=f'{getMethodName(i-1)}')
         plt.title(f'Cenário de Desordem {int(porcent*100)}% - Relação entre tamanho dos arrays e tempo de execução')
-        plt.xlabel('Tamanho (log10)')
+        plt.xlabel('Tamanho')
         plt.ylabel('Tempo de execução')
         plt.xscale('log')
         plt.legend()
