@@ -166,13 +166,14 @@ print(results)
 
 
 sizes = [10**i for i in range(2, 8)]
+pivots = ["Pivô na primeira", "Pivô central ", "Pivô média", "Pivô randômico", "Pivô mediana", "Procedimento acha pivô"]
 # Iterando pelos arrays internos para criar os gráficos
 for i, array in enumerate(results, start=1):
     formatted_array = [float(val) for val in array]  # Convertendo para float
     
     plt.figure(figsize=(8, 6))
-    plt.plot(sizes, formatted_array, marker='o', linestyle='-', label=f'Array {i}')
-    plt.title(f'Array {i} - Relação entre tamanho dos arrays e tempo de execução')
+    plt.plot(sizes, formatted_array, marker='o', linestyle='-', label=pivots[i-1])
+    plt.title(f'{pivots[i-1]} - Relação entre tamanho dos arrays e tempo de execução')
     plt.xlabel('Tamanho (log10)')
     plt.ylabel('Tempo de execução')
     plt.xscale('log')  # Usar escala logarítmica para o eixo x
